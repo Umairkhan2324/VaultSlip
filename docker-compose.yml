@@ -1,0 +1,12 @@
+# VaultSlip backend – run with: docker compose up -d
+# Requires Backend/.env (see setup.md). CORS_ORIGINS should include frontend origin (e.g. http://localhost:3000).
+services:
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./Backend/.env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
