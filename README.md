@@ -1,10 +1,12 @@
 # VaultSlip
 
-Receipt digitization and AI conversation: upload receipt images (or PDF/CSV/XLSX), extract data with OCR and AI, view in a canvas, and chat with your data. Built with **Supabase** (DB, Auth, Storage), **FastAPI** (extraction + agent), and **Next.js 16** (vaultslip-forntend).
+A receipt-to-data transmitter at scale, usable locally for free. Upload receipts or imports, turn them into structured data, then converse with and share that data through an expandable API. Built with **Supabase** (DB, Auth, Storage), **FastAPI** (extraction + agent), **Mistral** (OCR + LLM), and **Next.js 16** (frontend).
 
 - No Stripe; plans (free/pro/enterprise) set manually or by seed.
 - Enterprise users: see [docs/SEED_ENTERPRISE.md](docs/SEED_ENTERPRISE.md).
 
+##Architectre
+image.png
 ## Quick start
 
 ### 1. Supabase
@@ -21,7 +23,7 @@ cd backend
 python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
-# Set .env: SUPABASE_*, OPENAI_API_KEY, SUPABASE_JWT_SECRET, CORS_ORIGINS
+# Set .env: SUPABASE_*, MISTRAL_API_KEY, SUPABASE_JWT_SECRET, CORS_ORIGINS
 uvicorn app.main:app --reload --port 8000
 ```
 
@@ -31,7 +33,7 @@ uvicorn app.main:app --reload --port 8000
 ### 3. Frontend
 
 ```bash
-cd vaultslip-forntend
+cd frontend
 npm install
 # Set .env.local: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_PUBLIC_BACKEND_URL
 npm run dev
@@ -54,7 +56,7 @@ Then link users to those orgs (see [docs/SEED_ENTERPRISE.md](docs/SEED_ENTERPRIS
 | Area | Path | Notes |
 |------|------|--------|
 | **Setup** | [setup.md](setup.md) | Mistral + Supabase + Backend/Frontend env + local run + security |
-| Frontend | `vaultslip-forntend/` | Next.js 16, Supabase Auth, dashboard, upload, receipts, chat |
+| Frontend | `frontend/` | Next.js 16, Supabase Auth, dashboard, upload, receipts, chat |
 | Backend | `Backend/` | FastAPI, Supabase client, extraction, chat agent, quota |
 | Schema | `supabase/migrations/` | Organizations, profiles, batches, receipts, RLS, auth trigger |
 | Seed | `Backend/scripts/seed.py` | Creates enterprise orgs |
