@@ -1,6 +1,6 @@
 # VaultSlip – Setup Guide
 
-Discrete steps to set up Groq, Supabase, Backend, and Frontend locally. Use this with [Backend/.env.example](Backend/.env.example) and the frontend env vars below.
+Discrete steps to set up Mistral, Supabase, Backend, and Frontend locally. Use this with [Backend/.env.example](Backend/.env.example) and the frontend env vars below.
 
 ---
 
@@ -12,13 +12,13 @@ Discrete steps to set up Groq, Supabase, Backend, and Frontend locally. Use this
 
 ---
 
-## 2. Groq API key
+## 2. Mistral API key
 
-1. Go to [console.groq.com](https://console.groq.com).
+1. Go to [console.mistral.ai](https://console.mistral.ai).
 2. Sign up or log in.
 3. Open **API Keys** (left sidebar or account menu).
 4. Click **Create API Key**; name it (e.g. `vaultslip-dev`).
-5. Copy the key (shown once). Store it in Backend `.env` as `GROQ_API_KEY` (see step 4).
+5. Copy the key (shown once). Store it in Backend `.env` as `MISTRAL_API_KEY` (see step 4).
 6. **Security:** Use the key only in the Backend. Never put it in frontend code or in `NEXT_PUBLIC_*` env vars.
 
 ---
@@ -70,7 +70,7 @@ Discrete steps to set up Groq, Supabase, Backend, and Frontend locally. Use this
 | `SUPABASE_SERVICE_ROLE_KEY` | Project Settings → API → service_role | Yes |
 | `SUPABASE_JWT_SECRET` | Project Settings → API → JWT Secret | Yes |
 | `SUPABASE_ANON_KEY` | Project Settings → API → anon public | For token script / optional at runtime |
-| `GROQ_API_KEY` | [console.groq.com](https://console.groq.com) → API Keys | For Groq OCR/LLM |
+| `MISTRAL_API_KEY` | [console.mistral.ai](https://console.mistral.ai) → API Keys | For Mistral OCR/LLM |
 | `OPENAI_API_KEY` | platform.openai.com (if using OpenAI) | Optional |
 | `CORS_ORIGINS` | Comma-separated origins, e.g. `http://localhost:3000` | Yes (default: localhost) |
 
@@ -89,7 +89,7 @@ Discrete steps to set up Groq, Supabase, Backend, and Frontend locally. Use this
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJ...` (anon key) | Supabase Auth + RLS (safe to expose) |
 | `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:8000` | Backend API for local dev |
 
-3. **Security:** Only `NEXT_PUBLIC_*` vars are exposed to the browser. Never put `SUPABASE_SERVICE_ROLE_KEY` or `GROQ_API_KEY` in the frontend.
+3. **Security:** Only `NEXT_PUBLIC_*` vars are exposed to the browser. Never put `SUPABASE_SERVICE_ROLE_KEY` or `MISTRAL_API_KEY` in the frontend.
 
 ---
 
@@ -141,7 +141,7 @@ npm run dev
 ### 8.1 Current mitigations
 
 - **Auth:** JWT verified with Supabase; `org_id` from DB; protected routes use `require_auth`.
-- **Secrets:** Backend uses env only; service role and Groq key never in frontend; redaction in logs (tokens, auth headers, PII).
+- **Secrets:** Backend uses env only; service role and Mistral key never in frontend; redaction in logs (tokens, auth headers, PII).
 - **Data access:** Receipts/batches scoped by `org_id`; Supabase client uses parameterized queries (no raw SQL concatenation).
 - **Errors:** Global handler returns generic 500; no stack traces or internals in responses.
 - **Input:** Pydantic validation on APIs; contact form length limits and simple anti-spam (URL in message rejected).

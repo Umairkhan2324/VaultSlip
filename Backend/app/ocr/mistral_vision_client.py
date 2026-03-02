@@ -1,34 +1,30 @@
-"""Groq vision API client for OCR: image bytes → raw text via chat.completions."""
+"""Mistral Pixtral vision API client for OCR: image bytes to raw text."""
 from __future__ import annotations
 
 import asyncio
 import base64
-import logging
 from typing import Optional
 
-from groq import Groq  # type: ignore[import-untyped]
+from mistralai import Mistral
 
 from app.config import get_settings
-from app.ocr.groq_vision_engine import GroqVisionClientProtocol
+from app.ocr.vision_protocol import VisionClientProtocol
 
-logger = logging.getLogger(__name__)
-
-VISION_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
-# Base64 request limit 4MB; leave headroom for JSON/prompt.
+VISION_MODEL = "pixtral-large-latest"
 MAX_IMAGE_BYTES = 3 * 1024 * 1024
 
 
-def _client() -> Groq:
+def _client() -> Mistral:
     settings = get_settings()
-    if not settings.groq_api_key:
-        raise RuntimeError("GROQ_API_KEY is not configured")
-    return Groq(api_key=settings.groq_api_key)
+    if not settings.mistral_api_key:
+        raise RuntimeError("MISTRAL_API_KEY is not configured")
+    return Mistral(api_key=settings.mistral_api_key)
 
 
-def _call_groq_vision(url: str) -> str:
-    """Sync Groq vision call (run in thread)."""
+def _call_mistral_vision(url: str) -> str:
+    """Sync Mistral vision call (run in thread)."""
     client = _client()
-    resp = client.chat.completions.create(
+    resp = client.chat.complete(
         model=VISION_MODEL,
         messages=[
             {
@@ -52,8 +48,8 @@ def _call_groq_vision(url: str) -> str:
     return (content or "").strip()
 
 
-class GroqVisionClient(GroqVisionClientProtocol):
-    """Extract raw text from receipt images using Groq vision model."""
+class MistralVisionClient(VisionClientProtocol):
+    """Extract raw text from receipt images using Mistral Pixtral."""
 
     async def extract_text_from_image(
         self, image_bytes: bytes, filename: Optional[str] = None
@@ -67,4 +63,4 @@ class GroqVisionClient(GroqVisionClientProtocol):
         if filename and filename.lower().endswith(".png"):
             mime = "image/png"
         url = f"data:{mime};base64,{b64}"
-        return await asyncio.to_thread(_call_groq_vision, url)
+        return await asyncio.to_thread(_call_mistral_vision, url)

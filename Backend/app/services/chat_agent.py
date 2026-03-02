@@ -1,8 +1,8 @@
-"""Chat agent: tools over Supabase receipts; Groq chat.completions."""
+"""Chat agent: tools over Supabase receipts; Mistral chat.completions."""
 import json
 from typing import Dict, List
 
-from app.services.groq_client import chat_completion
+from app.services.mistral_client import chat_completion
 from app.services.receipt_tools import run_tool
 
 TOOLS: List[Dict] = [
@@ -55,7 +55,7 @@ async def run_agent(org_id: str, messages: list[dict], max_turns: int = 5) -> st
     )
     history: List[Dict] = [{"role": "system", "content": system}] + messages
     for _ in range(max_turns):
-        resp = chat_completion("llama-3.3-70b-versatile", history, tools=TOOLS)
+        resp = chat_completion("mistral-large-latest", history, tools=TOOLS)
         choice = resp["choices"][0]
         msg = choice["message"]
         if choice.get("finish_reason") == "stop":

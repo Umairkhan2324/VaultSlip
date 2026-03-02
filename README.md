@@ -53,7 +53,7 @@ Then link users to those orgs (see [docs/SEED_ENTERPRISE.md](docs/SEED_ENTERPRIS
 
 | Area | Path | Notes |
 |------|------|--------|
-| **Setup** | [setup.md](setup.md) | Groq + Supabase + Backend/Frontend env + local run + security |
+| **Setup** | [setup.md](setup.md) | Mistral + Supabase + Backend/Frontend env + local run + security |
 | Frontend | `vaultslip-forntend/` | Next.js 16, Supabase Auth, dashboard, upload, receipts, chat |
 | Backend | `Backend/` | FastAPI, Supabase client, extraction, chat agent, quota |
 | Schema | `supabase/migrations/` | Organizations, profiles, batches, receipts, RLS, auth trigger |

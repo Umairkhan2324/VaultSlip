@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class FallbackOcrEngine:
-    """Try primary OCR; on exception use fallback (e.g. Groq when Tesseract missing)."""
+    """Try primary OCR; on exception use fallback (e.g. Pixtral when Tesseract missing)."""
 
     def __init__(self, primary: OcrEngine, fallback: OcrEngine) -> None:
         self._primary = primary

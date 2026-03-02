@@ -1,10 +1,10 @@
-"""Receipt extraction pipeline: OCR engine + Groq structuring."""
+"""Receipt extraction pipeline: OCR engine + Mistral structuring."""
 import asyncio
 import logging
 from typing import Dict, List, Tuple
 
 from app.ocr.factory import get_ocr_engine
-from app.pipeline.structuring_llm_groq import structure_with_groq
+from app.pipeline.structuring_llm_mistral import structure_with_mistral
 
 logger = logging.getLogger(__name__)
 
@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 async def _extract_one(index: int, content: bytes) -> Tuple[int, Dict]:
     engine = get_ocr_engine()
     ocr = await engine.extract_text(content)
-    ext = await structure_with_groq(ocr)
+    ext = await structure_with_mistral(ocr)
     return index, ext.model_dump()
 
 
 async def extract_batch(image_contents: List[Tuple[int, bytes]], concurrency: int = 8) -> dict:
-    """Process a batch of images using the hybrid OCR + Groq pipeline."""
+    """Process a batch of images using the hybrid OCR + Mistral pipeline."""
     sem = asyncio.Semaphore(concurrency)
     results: List[Dict] = []
     errors: List[Dict] = []

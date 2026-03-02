@@ -16,9 +16,8 @@ class Settings(BaseSettings):
     supabase_anon_key: str | None = Field(default=None, alias="SUPABASE_ANON_KEY")
     supabase_jwt_secret: str = Field(alias="SUPABASE_JWT_SECRET")
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
-    # Optional: Groq API key for future LLM + vision usage.
-    groq_api_key: str | None = Field(default=None, alias="GROQ_API_KEY")
-    # OCR engine selector; see app.ocr.factory.get_ocr_engine for options.
+    mistral_api_key: str | None = Field(default=None, alias="MISTRAL_API_KEY")
+    # OCR engine: tesseract | pixtral (Mistral Pixtral for vision).
     ocr_engine: str = Field(default="tesseract", alias="OCR_ENGINE")
     # Accept a simple comma-separated string in .env and expose a parsed list.
     cors_origins_raw: str = Field(default="http://localhost:3000", alias="CORS_ORIGINS")

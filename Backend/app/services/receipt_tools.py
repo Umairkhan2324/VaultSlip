@@ -1,4 +1,4 @@
-"""Receipt-focused tools used by the Groq chat agent."""
+"""Receipt-focused tools used by the Mistral chat agent."""
 from __future__ import annotations
 
 import json

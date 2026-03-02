@@ -1,14 +1,9 @@
-"""Groq-backed structuring of OCR text into ReceiptExtraction.
-
-Uses the official Groq Python SDK with an OpenAI-compatible chat.completions
-interface, mirroring the Quickstart example:
-https://console.groq.com/docs/quickstart
-"""
+"""Mistral-backed structuring of OCR text into ReceiptExtraction."""
 from __future__ import annotations
 
 import json
 
-from groq import Groq  # type: ignore[import-untyped]
+from mistralai import Mistral
 
 from app.config import get_settings
 from app.models.receipt import ReceiptExtraction
@@ -32,20 +27,22 @@ def _build_messages(ocr: RawOcrResult) -> list[dict]:
     ]
 
 
-def _client() -> Groq:
+def _client() -> Mistral:
     settings = get_settings()
-    if not settings.groq_api_key:
-        raise RuntimeError("GROQ_API_KEY is not configured")
-    return Groq(api_key=settings.groq_api_key)
+    if not settings.mistral_api_key:
+        raise RuntimeError("MISTRAL_API_KEY is not configured")
+    return Mistral(api_key=settings.mistral_api_key)
 
 
-async def structure_with_groq(ocr: RawOcrResult, max_retries: int = 3) -> ReceiptExtraction:
-    """Call Groq to turn OCR text into a validated ReceiptExtraction."""
+async def structure_with_mistral(
+    ocr: RawOcrResult, max_retries: int = 3
+) -> ReceiptExtraction:
+    """Call Mistral to turn OCR text into a validated ReceiptExtraction."""
     client = _client()
     for attempt in range(max_retries):
         try:
-            resp = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+            resp = client.chat.complete(
+                model="mistral-large-latest",
                 messages=_build_messages(ocr),
                 response_format=_response_format_schema(),
             )
@@ -57,5 +54,4 @@ async def structure_with_groq(ocr: RawOcrResult, max_retries: int = 3) -> Receip
                 raise
 
 
-__all__ = ["structure_with_groq"]
-
+__all__ = ["structure_with_mistral"]
