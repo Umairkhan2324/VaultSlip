@@ -5,8 +5,11 @@ A receipt-to-data transmitter at scale, usable locally for free. Upload receipts
 - No Stripe; plans (free/pro/enterprise) set manually or by seed.
 - Enterprise users: see [docs/SEED_ENTERPRISE.md](docs/SEED_ENTERPRISE.md).
 
-##Architectre
-image.png
+## Architecture
+
+![VaultSlip architecture](assets/architecture.png)
+
+
 ## Quick start
 
 ### 1. Supabase
