@@ -7,7 +7,7 @@ A receipt-to-data transmitter at scale, usable locally for free. Upload receipts
 
 ## Architecture
 
-![VaultSlip architecture](assets/architecture.png)
+![VaultSlip architecture](assets/image.png)
 
 
 ## Quick start
